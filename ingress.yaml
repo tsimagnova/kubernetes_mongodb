@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mongo-express-ingress
+spec: 
+  rules:
+    - host: nongo-express-ingress.com  # Remplacez par votre domaine
+      http:
+        paths:
+          - path: / # Le chemin d'accès que vous souhaitez utiliser
+            pathType: Prefix
+            backend:
+              service:
+                name: mongo-express-service
+                port:
+                  number: 8081
+          
+
+
+

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nodejs-app
+  labels:
+    app: my-nodejs-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-nodejs-app
+  template:
+    metadata:
+      labels:
+        app: my-nodejs-app
+    spec:
+      containers:
+      - name: my-nodejs-app
+        image: tsimagnova/nodejs
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        env:
+        - name: mongo-configmap
+          value: mongodb-service
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-nodejs-app-service
+spec:
+  selector:
+    app: my-nodejs-app
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30001
